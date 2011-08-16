@@ -1,4 +1,6 @@
-﻿using System.Reactive.Linq;
+﻿using System;
+using System.Diagnostics;
+using System.Reactive.Linq;
 using System.Web.Mvc;
 
 namespace Reactive.Mvc.Sample.Controllers
@@ -7,9 +9,9 @@ namespace Reactive.Mvc.Sample.Controllers
     {
         public HomeController()
         {
-            //Request
-            //    .Where(m => m.Action == "index")
-                //.View("Hi world");
+            Request
+                .Where(m => m.Action == "Index");
+            //.View("Hello World");
         }
     }
 }

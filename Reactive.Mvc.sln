@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reactive.Mvc", "src\Reactiv
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reactive.Mvc.Test", "tests\Reactive.Mvc.Test\Reactive.Mvc.Test.csproj", "{E8F4DAB0-4F57-4E94-96A9-B5977A4B37C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reactive.Mvc.Sample", "Reactive.Mvc.Sample\Reactive.Mvc.Sample.csproj", "{DE2E04E8-B53D-4A85-B1DF-8C3334AA9500}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reactive.Mvc.Sample", "src\Reactive.Mvc.Sample\Reactive.Mvc.Sample.csproj", "{DE2E04E8-B53D-4A85-B1DF-8C3334AA9500}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

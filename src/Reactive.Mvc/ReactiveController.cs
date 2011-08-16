@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reactive.Linq;
 using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace Reactive.Mvc
 {
@@ -23,13 +24,18 @@ namespace Reactive.Mvc
         {
             var context = new ReactiveRequestContext()
                               {
-                                  Action = "Index"
+                                  Action = ResolveAction()
                               };
 
             //TODO: this seems weird -> we essentially do 1 event & throw away chain.  Is right way from Web perspective...
             _observers.ForEach(observer => observer.OnNext(context));
             _observers.ForEach(m => m.OnCompleted());
             _completed = true;
+        }
+
+        private string ResolveAction()
+        {
+            return ControllerContext.RouteData.GetRequiredString("action");
         }
 
         public IDisposable Subscribe(IObserver<ReactiveRequestContext> observer)

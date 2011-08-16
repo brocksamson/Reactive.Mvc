@@ -136,7 +136,7 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\src\Reactive.Mvc\Reactive.Mvc.csproj">
+    <ProjectReference Include="..\Reactive.Mvc\Reactive.Mvc.csproj">
       <Project>{AAE4180A-4285-4898-A243-CFEFB0937345}</Project>
       <Name>Reactive.Mvc</Name>
     </ProjectReference>
