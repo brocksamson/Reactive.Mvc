@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive.Linq;
 using System.Web.Mvc;
 
 namespace Reactive.Mvc
@@ -10,14 +11,14 @@ namespace Reactive.Mvc
             return observable
                 .Subscribe(context =>
                                {
-                                   var viewData = context.ControllerContext.Controller.ViewData;
+                                   var viewData = context.ViewData;
                                    viewData.Model = contentSelector.Invoke(context);
                                    var result = new ViewResult
                                                     {
                                                         ViewData = viewData,
-                                                        TempData = context.ControllerContext.Controller.TempData,
+                                                        TempData = context.TempData
                                                     };
-                                   result.ExecuteResult(context.ControllerContext);
+                                   context.Result = result;
                                });
         }
         
@@ -26,7 +27,7 @@ namespace Reactive.Mvc
             return observable
                 .Subscribe(context =>
                                {
-                                   context.ControllerContext.Controller.ViewData.Model = contentSelector.Invoke(context);
+                                   context.ViewData.Model = contentSelector.Invoke(context);
                                    var result = new JsonResult
                                                     {
                                                         Data = contentSelector.Invoke(context),
@@ -34,7 +35,7 @@ namespace Reactive.Mvc
                                                         ContentEncoding = null,
                                                         JsonRequestBehavior = JsonRequestBehavior.DenyGet
                                                     };
-                                   result.ExecuteResult(context.ControllerContext);
+                                   context.Result = result;
                                });
         }
     }

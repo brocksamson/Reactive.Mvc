@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Reactive.Linq;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -8,30 +9,37 @@ using NUnit.Framework;
 namespace Reactive.Mvc.Test.Rendering
 {
     //again just fighting the underlying system :(.
-    //[TestFixture]
-    //public class When_rendering_a_view
-    //{
-    //    [Test]
-    //    public void Should_render_a_view_result_with_correct_model()
-    //    {
-    //        //setting up controllers to test this is way to damned hard -> need to abstract new factory or something.
-    //        var builder = new TestControllerBuilder {RawUrl = "~/"};
-    //        var controller = builder.CreateController<TestController>();
-    //        controller.RouteData.Values.Add("action", "index");
-    //        controller.RouteData.Values.Add("controller", "Test");
-    //        var contexts = new Collection<ReactiveRequestContext>
-    //                           {
-    //                               new ReactiveRequestContext{ControllerContext = controller.ControllerContext}
-    //                           };
-    //        var observable = contexts.ToObservable();
+    [TestFixture]
+    public class When_rendering_a_view
+    {
+        private IObservable<ReactiveRequestContext> _observable;
 
-    //        var testString = "My Test String";
-    //        observable.ToView(m => testString);
-    //        Assert.AreEqual(testString, contexts[0].ViewData.Model);
-    //    }
-    //}
+        [Test]
+        public void Should_render_a_view_result_with_correct_model()
+        {
+            var contexts = new Collection<ReactiveRequestContext>
+                               {
+                                   new ReactiveRequestContext{ViewData = new ViewDataDictionary()}
+                               };
+            _observable = contexts.ToObservable();
 
-    //public class TestController : Controller
-    //{
-    //}
+            const string testString = "My Test String";
+            _observable.ToView(m => testString);
+            Assert.AreEqual(testString, contexts[0].ViewData.Model);
+        }
+
+        [Test]
+        public void Should_render_a_json_result_with_correct_model()
+        {
+            var contexts = new Collection<ReactiveRequestContext>
+                               {
+                                   new ReactiveRequestContext{ViewData = new ViewDataDictionary()}
+                               };
+            var observable = contexts.ToObservable();
+
+            const string testString = "My Test String";
+            observable.ToJson(m => testString);
+            Assert.AreEqual(testString, contexts[0].ViewData.Model);
+        }
+    }
 }

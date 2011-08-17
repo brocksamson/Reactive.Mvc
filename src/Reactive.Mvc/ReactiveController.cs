@@ -22,7 +22,8 @@ namespace Reactive.Mvc
             var context = new ReactiveRequestContext()
                               {
                                   Action = ResolveAction(),
-                                  ControllerContext = ControllerContext
+                                  ViewData = ViewData,
+                                  TempData = TempData
                               };
 
             //TODO: this seems weird -> we essentially do 1 event & throw away chain.  Is right way from Web lifecycle...
@@ -30,6 +31,7 @@ namespace Reactive.Mvc
             _observers.ForEach(observer => observer.OnNext(context));
             _completed = true;
             _observers.ForEach(m => m.OnCompleted());
+            context.Result.ExecuteResult(ControllerContext);
         }
 
         private string ResolveAction()
