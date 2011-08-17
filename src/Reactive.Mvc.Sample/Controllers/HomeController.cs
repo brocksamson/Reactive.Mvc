@@ -10,8 +10,19 @@ namespace Reactive.Mvc.Sample.Controllers
         public HomeController()
         {
             Request
-                .Where(m => m.Action == "Index");
-            //.View("Hello World");
+                //simplest ways first :)
+                .Where(m => m.Action.ToLower() == "index")
+                .ToView(select => new Hello("Hello World"));
+        }
+    }
+
+    public class Hello
+    {
+        public string HelloWorld { get; private set; }
+
+        public Hello(string helloWorld)
+        {
+            HelloWorld = helloWorld;
         }
     }
 }

@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReactiveController.cs" />
+    <Compile Include="ReactiveExtensions.cs" />
     <Compile Include="ReactiveRequestContext.cs" />
   </ItemGroup>
   <ItemGroup>

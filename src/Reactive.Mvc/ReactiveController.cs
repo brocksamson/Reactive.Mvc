@@ -24,10 +24,12 @@ namespace Reactive.Mvc
         {
             var context = new ReactiveRequestContext()
                               {
-                                  Action = ResolveAction()
+                                  Action = ResolveAction(),
+                                  ControllerContext = ControllerContext
                               };
 
-            //TODO: this seems weird -> we essentially do 1 event & throw away chain.  Is right way from Web perspective...
+            //TODO: this seems weird -> we essentially do 1 event & throw away chain.  Is right way from Web lifecycle...
+            //robust imp would setup a singleton observer of some sort & let the IOC container determine lifecycle of observers :)
             _observers.ForEach(observer => observer.OnNext(context));
             _observers.ForEach(m => m.OnCompleted());
             _completed = true;
@@ -47,7 +49,7 @@ namespace Reactive.Mvc
         public void Dispose()
         {
             if(!_completed)
-                _observers.ForEach(m => m.OnCompleted());
+                _observers.ForEach(m => m.OnError(new ObjectDisposedException("Dispose was called before complete.")));
         }
     }
 }
