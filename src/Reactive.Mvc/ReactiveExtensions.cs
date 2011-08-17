@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reactive.Linq;
 using System.Web.Mvc;
 
 namespace Reactive.Mvc
@@ -11,14 +10,29 @@ namespace Reactive.Mvc
             return observable
                 .Subscribe(context =>
                                {
-                                   context.ControllerContext.Controller.ViewData.Model =
-                                       contentSelector.Invoke(context);
+                                   var viewData = context.ControllerContext.Controller.ViewData;
+                                   viewData.Model = contentSelector.Invoke(context);
                                    var result = new ViewResult
                                                     {
-                                                        ViewData =
-                                                            context.ControllerContext.Controller.ViewData,
-                                                        TempData =
-                                                            context.ControllerContext.Controller.TempData,
+                                                        ViewData = viewData,
+                                                        TempData = context.ControllerContext.Controller.TempData,
+                                                    };
+                                   result.ExecuteResult(context.ControllerContext);
+                               });
+        }
+        
+        public static IDisposable ToJson<TResult>(this IObservable<ReactiveRequestContext> observable, Func<ReactiveRequestContext, TResult> contentSelector)
+        {
+            return observable
+                .Subscribe(context =>
+                               {
+                                   context.ControllerContext.Controller.ViewData.Model = contentSelector.Invoke(context);
+                                   var result = new JsonResult
+                                                    {
+                                                        Data = contentSelector.Invoke(context),
+                                                        ContentType = null,
+                                                        ContentEncoding = null,
+                                                        JsonRequestBehavior = JsonRequestBehavior.DenyGet
                                                     };
                                    result.ExecuteResult(context.ControllerContext);
                                });

@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Reactive.Linq;
 using System.Web.Mvc;
-using System.Web.Routing;
 
 namespace Reactive.Mvc
 {
@@ -31,8 +28,8 @@ namespace Reactive.Mvc
             //TODO: this seems weird -> we essentially do 1 event & throw away chain.  Is right way from Web lifecycle...
             //robust imp would setup a singleton observer of some sort & let the IOC container determine lifecycle of observers :)
             _observers.ForEach(observer => observer.OnNext(context));
-            _observers.ForEach(m => m.OnCompleted());
             _completed = true;
+            _observers.ForEach(m => m.OnCompleted());
         }
 
         private string ResolveAction()
@@ -48,8 +45,9 @@ namespace Reactive.Mvc
 
         public void Dispose()
         {
-            if(!_completed)
-                _observers.ForEach(m => m.OnError(new ObjectDisposedException("Dispose was called before complete.")));
+            //so uncommenting this swallows all errors in the pipeline or makes them internal errors
+            //if(!_completed)
+            //    _observers.ForEach(m => m.OnError(new ObjectDisposedException("Dispose was called before complete.")));
         }
     }
 }
